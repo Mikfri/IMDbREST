@@ -1,0 +1,6 @@
+@IMDbREST_HostAddress = http://localhost:5173
+
+GET {{IMDbREST_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
