@@ -22,5 +22,55 @@ namespace IMDbREST.Controllers
         {
             return _movieService.SearchMovies(title);
         }
+
+        //[HttpGet("{tconst}")]
+        //public IActionResult GetMovieDetails(string tconst)
+        //{
+        //    var movie = _movieService.GetMovieDetails(tconst);
+        //    if (movie == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(movie);
+        //}
+
+        [HttpGet("{tconst}")]
+        public ActionResult<MovieBase> GetMovieDetails(string tconst)
+        {
+            var movie = _movieService.GetMovieDetails(tconst);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return movie;
+        }
+
+        // todo: Afprøv
+        [HttpPost]
+        public IActionResult AddMovie(MovieBase movie)
+        {
+            _movieService.AddMovie(movie);
+            return Ok();
+        }
+
+        // todo: Afprøv
+        [HttpPut]
+        public ActionResult<MovieBase> UpdateMovie(MovieBase movie)
+        {
+            var updatedMovie = _movieService.UpdateMovie(movie);
+            if (updatedMovie == null)
+            {
+                return NotFound();
+            }
+            return updatedMovie;
+        }
+
+        // todo: Afprøv
+        [HttpDelete]
+        public IActionResult DeleteMovie(MovieBase movie)
+        {
+            _movieService.DeleteMovie(movie);
+            return Ok();
+        }
     }
 }

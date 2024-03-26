@@ -14,10 +14,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/// Mine services starter her:
 builder.Services.AddDbContext<IMDb_Context>();
-//builder.Services.AddDbContext<IMDb_Context>(options => options.UseSqlServer(Configuration.GetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=IMDb_DB; Integrated Security=True;")));
 builder.Services.AddScoped<MovieService>();
 builder.Services.AddTransient<IGRepository<MovieBase>, GRepository<MovieBase>>();
+
+// Denne kode er til at løse problemet med at der er en reference loop i vores data - men det er ikke nok..
+// vi bør istedet bruge DTO'er
+//builder.Services.AddControllers().AddJsonOptions(x =>
+//    x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
+
 
 //builder.Services.AddSingleton(new PersonService());
 
