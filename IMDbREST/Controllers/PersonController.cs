@@ -16,6 +16,20 @@ namespace IMDbREST.Controllers
             _personService = personService;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddPerson(PersonDTO personDTO)
+        {
+            try
+            {
+                await _personService.AddPerson(personDTO);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // GET: api/Person?searchString={searchString}
         [HttpGet]
         public async Task<ActionResult<List<PersonDTO>>> SearchPersons(string searchString)
