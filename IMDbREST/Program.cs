@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 /// Mine services starter her:
 builder.Services.AddDbContext<IMDb_Context>();
 builder.Services.AddScoped<MovieService>();
+builder.Services.AddScoped<PersonService>();
 
 // Denne kode er til at løse problemet med at der er en reference loop i vores data - men det er ikke nok..
 // vi bør istedet bruge DTO'er
