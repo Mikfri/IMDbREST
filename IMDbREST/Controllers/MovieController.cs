@@ -17,77 +17,74 @@ namespace IMDbREST.Controllers
             _movieService = movieService;
         }
 
-        // GET: api/Movies
-        [HttpGet]
-        public IEnumerable<MovieBase> GetMovies([FromQuery] string title)
+        [HttpPost]
+        public async Task<IActionResult> AddMovie(MovieBaseDTO movieDTO)
         {
-            return _movieService.SearchMovies(title);
+            try
+            {
+                await _movieService.AddMovie(movieDTO);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        //[HttpGet("{tconst}")]
-        //public IActionResult GetMovieDetails(string tconst)
-        //{
-        //    var movie = _movieService.GetMovieDetails(tconst);
-        //    if (movie == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(movie);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> SearchMovies(string searchString)
+        {
+            try
+            {
+                var movies = await _movieService.GetMovieListByTitle(searchString);
+                return Ok(movies);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("{tconst}")]
-        public ActionResult<MovieBase> GetMovieDetails(string tconst)
+        public async Task<IActionResult> GetAllMovieInfo(string tconst)
         {
-            var movie = _movieService.GetMovieDetails(tconst);
-            if (movie == null)
+            try
             {
-                return NotFound();
+                var movie = await _movieService.GetAllMovieInfoByTconst(tconst);
+                return Ok(movie);
             }
-            return movie;
-        }
-
-        // todo: Afprøv
-        [HttpPost]
-        public IActionResult AddMovie(MovieBaseDTO movieDto)
-        {
-            var movie = new MovieBase
+            catch (Exception ex)
             {
-                TitleType = new TitleType { Type = movieDto.TitleType }, // assuming TitleType has a Type property of type string
-                PrimaryTitle = movieDto.PrimaryTitle,
-                IsAdult = movieDto.IsAdult,
-                StartYear = movieDto.StartYear,
-                EndYear = movieDto.EndYear,
-                RuntimeMins = movieDto.RuntimeMins
-            };
-
-            _movieService.AddMovie(movie);
-            return Ok();
+                return BadRequest(ex.Message);
+            }
         }
-        //[HttpPost]
-        //public IActionResult AddMovie(MovieBase movie)
-        //{
-        //    _movieService.AddMovie(movie);
-        //    return Ok();
-        //}
 
-        // todo: Afprøv
         [HttpPut]
-        public ActionResult<MovieBase> UpdateMovie(MovieBase movie)
+        public async Task<IActionResult> UpdateMovie(MovieBaseDTO movieDTO)
         {
-            var updatedMovie = _movieService.UpdateMovie(movie);
-            if (updatedMovie == null)
+            try
             {
-                return NotFound();
+                await _movieService.UpdateMovie(movieDTO);
+                return Ok();
             }
-            return updatedMovie;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // todo: Afprøv
-        [HttpDelete]
-        public IActionResult DeleteMovie(MovieBase movie)
+        [HttpDelete("{tconst}")]
+        public async Task<IActionResult> DeleteMovie(string tconst)
         {
-            _movieService.DeleteMovie(movie);
-            return Ok();
+            try
+            {
+                await _movieService.DeleteMovie(tconst);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
