@@ -37,5 +37,20 @@ namespace IMDbREST.Controllers
             var persons = await _personService.GetPersonListByName(searchString);
             return Ok(persons);
         }
+
+        [HttpDelete("{nconst}")]
+        public async Task<IActionResult> DeletePerson(string nconst)
+        {
+            try
+            {
+                await _personService.DeletePerson(nconst);
+                return NoContent(); // Return a NoContent status code to indicate that the resource was deleted successfully
+            }
+            catch (Exception ex)
+            {
+                // Log the exception...
+                return BadRequest(); // Return a BadRequest status code if something went wrong
+            }
+        }
     }
 }
