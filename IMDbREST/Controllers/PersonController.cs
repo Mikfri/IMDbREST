@@ -38,6 +38,21 @@ namespace IMDbREST.Controllers
             return Ok(persons);
         }
 
+        [HttpGet("{nconst}")]
+        public async Task<IActionResult> GetAllPersonInfo(string nconst)
+        {
+            try
+            {
+                var personInfo = await _personService.GetAllPersonInfoByNconst(nconst);
+                return Ok(personInfo); // Return a Ok status code with the person info
+            }
+            catch (Exception ex)
+            {
+                // Log the exception...
+                return NotFound(); // Return a NotFound status code if the person was not found
+            }
+        }
+
         [HttpDelete("{nconst}")]
         public async Task<IActionResult> DeletePerson(string nconst)
         {
